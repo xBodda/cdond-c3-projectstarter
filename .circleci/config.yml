@@ -195,6 +195,7 @@ jobs:
 
       - run:
           name: Run migrations
+          no_output_timeout: 20m
           command: |
             cd backend
             npm i
