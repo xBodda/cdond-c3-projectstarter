@@ -197,14 +197,12 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm install
-            npm audit fix --audit-level=critical --force
-            npm audit fix --force
-            npm audit --audit-level=critical
-            npm run migrations > migrations_dump.txt
-            npm audit fix --audit-level=critical --force
-            npm audit fix --force
-            npm audit --audit-level=critical
+            npm i
+            sudo npm install pm2 -g
+            npm run migrations > migration.log
+            cat migration.log
+            migration_succesful=$(cat migration.log | grep -c "has been executed successfully")
+            if [ $migration_succesful > 0 ]; then exit 0; else exit 1; fi;
 
       - run:
           name: Send migration status to memstash
