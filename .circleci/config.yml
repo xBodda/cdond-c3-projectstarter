@@ -137,6 +137,29 @@ jobs:
 
       - destroy-environment
 
+  configure-infrastructure:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["23:1a:47:2a:f1:26:52:37:eb:d4:74:8f:b3:96:b7:0e"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible tar gzip
+            pip install awscli
+      - run:
+          name: Configure Server
+          command: |
+            cd .circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt configure-server.yml
+            
+      - destroy-environment  
+
 workflows:
   default:
     jobs:
