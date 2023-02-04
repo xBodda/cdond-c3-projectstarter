@@ -18,11 +18,6 @@
     dest: /home/ubuntu/app/
     owner: ubuntu
 
-- name: "NPM Install"
-  shell:
-    cmd: npm install --production
-    chdir: /home/ubuntu/app
-
 - name: "Start backend with pm2"
   become: yes
   shell: |
