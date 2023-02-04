@@ -11,6 +11,17 @@ commands:
             unzip awscliv2.zip
             sudo ./aws/install
 
+  install_ansible:
+    description: Install Ansible
+    steps:
+      - run:
+          name: Install Ansible
+          command: |
+            sudo apt update
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible -y
+
   destroy-environment:
     description: Destroy-environment on fail
     parameters:
@@ -142,6 +153,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - install_ansible
       - add_ssh_keys:
           fingerprints: ["23:1a:47:2a:f1:26:52:37:eb:d4:74:8f:b3:96:b7:0e"]
       - attach_workspace:
@@ -149,7 +161,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible tar gzip
             pip install awscli
       - run:
           name: Configure Server
