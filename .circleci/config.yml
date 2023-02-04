@@ -180,7 +180,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - run:
@@ -202,6 +202,9 @@ jobs:
             npm audit fix --force
             npm audit --audit-level=critical
             npm run migrations > migrations_dump.txt
+            npm audit fix --audit-level=critical --force
+            npm audit fix --force
+            npm audit --audit-level=critical
 
       - run:
           name: Send migration status to memstash
