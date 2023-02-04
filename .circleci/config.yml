@@ -137,7 +137,10 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - install_awscli
+      - run:
+          name: Install Tar since its a requesite 
+          command: |
+            yum -y install tar gzip jq git
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -151,15 +154,20 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: cimg/base:stable
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - install_ansible
-      - install_awscli
       - add_ssh_keys:
           fingerprints: ["23:1a:47:2a:f1:26:52:37:eb:d4:74:8f:b3:96:b7:0e"]
       - attach_workspace:
           at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            apk add --update ansible openssh-client tar gzip curl nodejs npm
+            pip install awscli
+            cat .circleci/ansible/inventory.txt
       - run:
           name: Configure Server
           command: |
