@@ -17,7 +17,7 @@ commands:
       - run:
           name: Install Node.js 18
           command: |
-            npm install -g npm@latest
+            npm install
 
   install_ansible:
     description: Install Ansible
