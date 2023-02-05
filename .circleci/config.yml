@@ -222,10 +222,14 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - install_nodejs
       - run: yum install -y tar gzip 
       - attach_workspace:
             at: ~/
+      - run:
+          name: Install NodeJS
+          command: |
+              curl -sL https://rpm.nodesource.com/setup_18.x
+              sudo yum install -y nodejs
       - run:
           name: Get backend url
           command: |
