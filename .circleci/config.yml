@@ -221,7 +221,7 @@ jobs:
           name: Install dependencies
           command: |
               cat /etc/*release
-              curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+              curl -sL https://rpm.nodesource.com/setup_18.x | bash -
               yum -y install nodejs
       - run:
           name: Get backend url
@@ -240,6 +240,8 @@ jobs:
           name: Deploy frontend objects
           command: |
               cd frontend
+              curl --silent --location https://rpm.nodesource.com/setup_18.x | sudo bash -
+              sudo yum -y install nodejs
               npm audit fix --audit-level=critical 
               npm install --skip-broken
               npm install webpack -g --skip-broken
