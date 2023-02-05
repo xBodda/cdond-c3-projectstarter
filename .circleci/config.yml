@@ -194,8 +194,8 @@ jobs:
           command: |
             cd backend
             npm cache clean --force
-            npm run build -prod
             npm install
+            npm run build -prod
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
 
