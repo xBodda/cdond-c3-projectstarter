@@ -180,21 +180,21 @@ jobs:
 
   run-migrations:
     docker:
-      - image: cimg/node:13.8.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-deps]
       - run:
           name: Install dependencies
           command: |
             sudo apt-get update
             sudo apt-get install -y awscli
-            
+
       - run:
           name: Run migrations
           command: |
             cd backend
+            npm cache clean --force
+            npm run build -prod
             npm install
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
