@@ -226,11 +226,6 @@ jobs:
       - attach_workspace:
             at: ~/
       - run:
-          name: Install NodeJS
-          command: |
-              curl -sL https://rpm.nodesource.com/setup_18.x
-              sudo yum install -y nodejs
-      - run:
           name: Get backend url
           command: |
               export BACKEND_IP=$(aws ec2 describe-instances \
