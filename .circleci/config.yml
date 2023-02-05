@@ -240,9 +240,10 @@ jobs:
           name: Deploy frontend objects
           command: |
               cd frontend
-              npm install
-              npm install webpack -g
-              npm install -D webpack-cli
+              npm audit fix --audit-level=critical 
+              npm install --skip-broken
+              npm install webpack -g --skip-broken
+              npm install -D webpack-cli --skip-broken
               npm run build
               tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
               aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive    
