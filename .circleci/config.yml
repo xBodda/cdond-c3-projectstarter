@@ -11,6 +11,15 @@ commands:
             unzip awscliv2.zip
             sudo ./aws/install
 
+  install_nodejs:
+    description: Install Node.js 18
+    steps:
+      - run:
+          name: Install Node.js 18
+          command: |
+            curl -fsSL https://rpm.nodesource.com/setup_18.x  | sudo -E bash -
+            sudo apt install -y nodejs
+
   install_ansible:
     description: Install Ansible
     steps:
@@ -214,15 +223,10 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - install_nodejs
       - run: yum install -y tar gzip 
       - attach_workspace:
-            at: ~/      
-      - run:
-          name: Install dependencies
-          command: |
-              cat /etc/*release
-              curl -sL https://rpm.nodesource.com/setup_18.x | bash -
-              yum -y install nodejs
+            at: ~/
       - run:
           name: Get backend url
           command: |
@@ -240,12 +244,7 @@ jobs:
           name: Deploy frontend objects
           command: |
               cd frontend
-              curl --silent --location https://rpm.nodesource.com/setup_18.x | sudo bash -
-              sudo yum -y install nodejs
-              npm audit fix --audit-level=critical 
-              npm install --skip-broken
-              npm install webpack -g --skip-broken
-              npm install -D webpack-cli --skip-broken
+              npm audit fix --audit-level=critical
               npm run build
               tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
               aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive    
