@@ -17,8 +17,7 @@ commands:
       - run:
           name: Install Node.js 18
           command: |
-            curl -fsSL https://rpm.nodesource.com/setup_18.x  | sudo -E bash -
-            sudo apt install -y nodejs
+            npm install -g npm@latest
 
   install_ansible:
     description: Install Ansible
