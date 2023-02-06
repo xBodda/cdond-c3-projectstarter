@@ -310,7 +310,7 @@ jobs:
   
   deploy-backend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -321,12 +321,10 @@ jobs:
             - "ca:1e:08:3d:6c:b6:95:5b:1d:8d:cc:3f:de:e3:47:b1"
 
       - run:
-          name: Install Node.js 13
+          name: Install AWS_CLI
           command: |
-            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-            sudo apt install -y nodejs
-            sudo npm install --global n
-            sudo n 13.8.0
+            sudo apt-get update
+            sudo apt-get install -y awscli
 
       - attach_workspace:
           at: ~/
@@ -334,7 +332,6 @@ jobs:
       - run:
           name: Install Ansible
           command: |
-            yum install -y awscli
             amazon-linux-extras install epel -y
             yum update -y
             yum install -y ansible
