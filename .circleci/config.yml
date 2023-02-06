@@ -332,7 +332,6 @@ jobs:
       - run:
           name: Install Ansible
           command: |
-            amazon-linux-extras install epel -y
             yum update -y
             yum install -y ansible
 
