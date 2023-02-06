@@ -42,7 +42,7 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >>
-            aws s3 rm s3://<<parameters.Workflow_ID>> --recursive
+            aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >>
 
   revert-migrations:
@@ -333,8 +333,6 @@ jobs:
           name: Install Ansible
           command: |
             sudo apt-get update
-            sudo apt-get install software-properties-common -y
-            sudo add-apt-repository --yes --update ppa:ansible/ansible
             sudo apt-get install ansible -y
 
       - run:
