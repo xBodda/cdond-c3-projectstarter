@@ -260,10 +260,11 @@ jobs:
           command: |
               cd frontend
               aws s3 ls
+              ls
               echo ${CIRCLE_WORKFLOW_ID:0:7}
-              aws s3 cp dist s3://${CIRCLE_WORKFLOW_ID:0:7} --recursive    
+              aws s3 cp ./dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
-      - destroy-environment  
+      # - destroy-environment
   
 
 workflows:
