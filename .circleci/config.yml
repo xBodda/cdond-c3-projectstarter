@@ -375,11 +375,6 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update --no-cache aws-cli curl tar gzip nodejs npm
-
-      - run:
-          name: print inventory.txt from workspace
-          command: |
-            cat ~/inventory.txt
       
       - run:
           name: Backend smoke test.
