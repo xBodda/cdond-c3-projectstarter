@@ -379,24 +379,18 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-              --region us-east-1 \
+            BACKEND_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
-
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-            curl -s "${API_URL}/api/status" -v
-
-            if curl -s "${API_URL}/api/status" -v  | grep "ok"
+            export API_URL=http://${BACKEND_IP}:3030
+            echo Backend URL: ${API_URL}/api/status
+            sleep 60
+            curl -v $API_URL
+            if curl -s $API_URL/api/status | grep "ok"
             then
-                 
-              echo "backend smoketest succeed"
               exit 0
-              
             else
-              echo "Backend smoke test failed. check the issue"
               exit 1
             fi
 
