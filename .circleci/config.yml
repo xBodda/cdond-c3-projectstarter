@@ -243,8 +243,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          keys: [frontend-deps]
       - run: yum install -y tar gzip 
       - run:
           name: Install AWS CLI dependencies
@@ -283,7 +281,7 @@ jobs:
               npm audit fix --audit-level=critical 
               npm install
               npm run build
-              tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+              # tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
               aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
       # - destroy-environment
