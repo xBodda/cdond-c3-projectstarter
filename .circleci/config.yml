@@ -234,6 +234,8 @@ jobs:
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ~/project/backend/.env
 
             cat ~/project/backend/.env
+
+            cd .circleci/ansible
             cat inventory.txt
            
             ansible-playbook -i inventory.txt configure-server.yml
