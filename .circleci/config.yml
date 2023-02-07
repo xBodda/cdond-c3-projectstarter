@@ -385,8 +385,6 @@ jobs:
               --output text)
             export API_URL=http://${BACKEND_PUBLIC_IP}:3030
             echo Backend URL: ${API_URL}/api/status
-            sleep 60
-            curl -v $API_URL
             if curl $API_URL/api/status | grep "ok"
             then
               exit 0
