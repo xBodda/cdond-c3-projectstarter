@@ -1,13 +1,16 @@
 ---
-- name: "Creates backend app directory"
-  file:
-    path: ~/backend-app
-    state: directory
+- name: Copy backend files
+  become: true
+  copy:
+    src: /root/project/artifact.tar.gz
+    dest: /home/ubuntu/artifact.tar.gz
 
-- name: "Unarchive backend files"
-  unarchive:
-    src: artifact.tar.gz
-    dest: ~/backend-app
+- name: Prepare job
+  shell: |
+    cd /home/ubuntu/
+    tar xzvf artifact.tar.gz
+    pwd
+    ls -ltr
 
 - name: "Installing Node Dependencies"
   shell: |
@@ -19,7 +22,7 @@
     cd ~/backend-app/dist
     pm2 stop default
     pm2 start main.js
-    
+
   register: execute_node
 
 - name: print message
