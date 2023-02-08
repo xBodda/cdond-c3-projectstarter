@@ -1,16 +1,13 @@
 ---
-- name: Copy backend files
-  become: true
-  copy:
-    src: /root/project/artifact.tar.gz
-    dest: /home/ubuntu/artifact.tar.gz
+- name: "Creates backend app directory"
+  file:
+    path: ~/backend-app
+    state: directory
 
-- name: Prepare job
-  shell: |
-    cd /home/ubuntu/
-    tar xzvf artifact.tar.gz
-    pwd
-    ls -ltr
+- name: "Unarchive backend files"
+  unarchive:
+    src: artifact.tar.gz
+    dest: ~/backend-app
 
 - name: "Installing Node Dependencies"
   shell: |
