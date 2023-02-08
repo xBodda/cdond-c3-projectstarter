@@ -227,7 +227,9 @@ jobs:
       - run:
           name: Configure Server
           command: |
-            ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+            if [ -z "$(ssh-keygen -F $IP)" ]; then
+              ssh-keyscan -H $IP >> ~/.ssh/known_hosts
+            fi
             cd .circleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
