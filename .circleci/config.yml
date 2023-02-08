@@ -227,9 +227,6 @@ jobs:
       - run:
           name: Configure Server
           command: |
-            if [ -z "$(ssh-keygen -F $IP)" ]; then
-              ssh-keyscan -H $IP >> ~/.ssh/known_hosts
-            fi
             cd .circleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
