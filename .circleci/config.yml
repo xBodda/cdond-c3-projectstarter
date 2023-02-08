@@ -57,15 +57,12 @@ commands:
           
           when: on_fail
           command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/cicd-db-migration-<< parameters.workflow_id >>)
-            if (( $SUCCESS == 1 )); 
+            SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_ID >>)
+            if (( $SUCCESS == 1 ));
             then
-                cd ~/project/backend
-                npm install
-                npm run migration:revert
-                echo "revert migrations succeed"
-            else
-              echo "revert migrations failed"
+              cd ~/project/backend
+              npm install
+              npm run migration:revert
             fi
      
 jobs:
@@ -264,6 +261,7 @@ jobs:
             fi
 
       - destroy-environment
+      - revert-migrations
 
   deploy-frontend:
     docker:
@@ -315,6 +313,7 @@ jobs:
               aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
       - destroy-environment
+      - revert-migrations
   
   deploy-backend:
     docker:
@@ -373,6 +372,7 @@ jobs:
             ansible-playbook -i inventory.txt deploy-backend.yml
 
       - destroy-environment
+      - revert-migrations
 
   smoke-test:
     docker:
@@ -418,6 +418,7 @@ jobs:
             fi
 
       - destroy-environment
+      - revert-migrations
 
 workflows:
   default:
